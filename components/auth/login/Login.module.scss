@@ -1,0 +1,92 @@
+.login {
+  @apply max-w-primary px-8 mx-auto  mt-[105px];
+  .content {
+    @apply bg-white pl-[74px] pr-[82px] py-10 max-w-[384px] mx-auto rounded-[30px];
+  }
+  .graduation {
+    h1 {
+      @apply leading-10 text-3xl text-black;
+    }
+    p {
+      @apply font-light mt-3;
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.7);
+    }
+  }
+  .form {
+    @apply mt-10;
+    input {
+      @apply w-[100%] py-0.5 outline-none pl-6 mb-5;
+      border: 1px solid rgba(0, 0, 0, 0.4);
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+    .form__buttons {
+      @apply mt-5 flex flex-col gap-y-2;
+      button {
+        @apply w-[100%] rounded-lg py-1 text-white;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        &:first-child {
+          @apply bg-gray-primary;
+        }
+        &:last-child {
+          @apply bg-main;
+        }
+      }
+    }
+  }
+  .copy {
+    @apply mt-10 text-white leading-none font-light text-[15px] text-center;
+    a {
+      @apply text-main;
+    }
+  }
+}
+
+@media (max-width: 834px) {
+  .login {
+    @apply mt-14;
+    .content {
+      @apply px-[50px] max-w-[480px] rounded-[20px];
+      .graduation {
+        @apply text-center flex flex-col items-center justify-center;
+        h1 {
+          @apply leading-none font-bold text-base text-black;
+        }
+        p {
+          @apply font-light mt-2.5 text-xs max-w-[180px];
+          color: rgba(0, 0, 0, 0.7);
+        }
+      }
+      .form {
+        input {
+          @apply shadow-none text-xs h-[27px];
+          border: 1px solid rgba(0, 0, 0, 0.6);
+        }
+        .form__buttons {
+          @apply flex-col-reverse mt-1;
+          button {
+            @apply shadow-none text-xs h-[27px];
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 390px) {
+  .login {
+    .content {
+      @apply px-6 max-w-[234px];
+      .graduation {
+        p {
+          @apply max-w-[200px];
+        }
+      }
+    }
+    .copy {
+      @apply mt-5 text-sm;
+      a {
+        @apply text-main;
+      }
+    }
+  }
+}

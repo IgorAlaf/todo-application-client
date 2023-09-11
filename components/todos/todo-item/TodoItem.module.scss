@@ -1,0 +1,140 @@
+.item {
+  @apply text-white mt-[30px];
+  .title {
+    @apply text-[32px] font-light leading-none;
+  }
+  .wrapper {
+    @apply flex items-center justify-between bg-white h-[112px] rounded-[20px] px-[78px] py-[41px] mt-[30px] text-black;
+  }
+  .content {
+    @apply text-xl max-w-[300px] text-center cursor-pointer;
+    word-break: keep-all;
+  }
+  .conateiner {
+    @apply flex items-center justify-center;
+  }
+  .edit {
+    @apply flex gap-x-[30px];
+  }
+  .checked {
+    @apply flex items-center justify-center gap-x-[50px] relative;
+    span {
+      @apply text-xl font-light;
+    }
+  }
+}
+
+@media (max-width: 834px) {
+  .item {
+    @apply mt-5;
+    .title {
+      @apply text-base leading-none;
+    }
+    .wrapper {
+      @apply mt-2.5 py-0 h-[64px] pl-28 pr-[72px];
+      .content {
+        @apply text-base;
+      }
+      .checkmark {
+        height: 20px;
+        width: 20px;
+        top: -9px;
+      }
+      .container .checkmark:after {
+        left: 5%;
+        top: 5%;
+      }
+      .checked {
+        .time {
+          @apply hidden;
+        }
+      }
+      img {
+        width: 20px;
+        height: 20px;
+      }
+      .edit {
+        @apply gap-x-5;
+      }
+    }
+  }
+}
+@media (max-width: 704px) {
+  .item {
+    .wrapper {
+      @apply px-[18px];
+    }
+  }
+}
+@media (max-width: 596px) {
+  .item {
+    .wrapper {
+      .content {
+        @apply text-sm max-w-[200px];
+      }
+      img {
+        width: 15px;
+        height: 15px;
+      }
+      .edit {
+        @apply gap-x-2.5;
+      }
+      .checkmark {
+        height: 15px;
+        width: 15px;
+        top: -5px;
+      }
+      .container .checkmark:after {
+        width: 15px;
+        height: 15px;
+        left: 5%;
+        top: 5%;
+      }
+    }
+  }
+}
+@media (max-width: 390px) {
+  .item {
+    .wrapper {
+      .content {
+        @apply text-xs max-w-[150px];
+      }
+    }
+  }
+}
+
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30px;
+  width: 30px;
+  background-color: #d9d9d9;
+}
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.container .checkmark:after {
+  left: 20%;
+  top: 20%;
+  width: 20px;
+  height: 18px;
+  content: '';
+  background-image: url('/image/tick.svg');
+  background-size: cover;
+  background-position: center;
+}

@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+:root {
+  height: 100%;
+}
+
+body {
+  @apply bg-black;
+}
+@layer utilities {
+  .max-width-auto {
+    @apply max-w-primary mx-auto px-4;
+  }
+}
+input[value='0000-00-00']::-webkit-datetime-edit {
+  color: transparent;
+}

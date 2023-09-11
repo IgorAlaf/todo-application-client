@@ -1,0 +1,93 @@
+.header {
+  @apply bg-black;
+  .wrapper {
+    @apply max-w-primary px-8 mx-auto flex items-center justify-between py-5;
+  }
+  .link {
+    @apply text-white;
+  }
+  .active {
+    @apply text-main;
+  }
+  .enter {
+    @apply bg-main px-5 py-2.5 rounded-lg text-sm;
+  }
+  .title {
+    &-link {
+      @apply text-main text-3xl font-medium leading-none;
+    }
+  }
+  .list {
+    @apply flex items-center gap-x-8;
+    .item {
+      @apply text-base;
+    }
+  }
+  .logout {
+    @apply bg-gray-primary py-2.5 px-7 rounded-lg text-sm;
+  }
+  .search {
+    @apply flex-1 flex items-center max-w-[648px] mx-auto px-[30px] relative;
+    .search-input {
+      @apply w-[100%]  rounded-[15px] text-white px-16 py-2.5 outline-none text-xs relative block;
+      background-color: rgba(109, 108, 108, 0.73);
+    }
+    &::before {
+      content: ' ';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      z-index: 2;
+      background-image: url('/image/search.svg');
+      background-position: center;
+      background-size: cover;
+      top: 20%;
+      left: 50px;
+    }
+  }
+}
+.burger {
+  @apply hidden;
+}
+
+.menu {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  background: #000;
+  transition: transform 0.5s;
+  @apply flex items-center justify-center;
+}
+.menu-list {
+}
+
+@media (max-width: 834px) {
+  .header {
+    .wrapper {
+      .title {
+        &-link {
+          @apply text-2xl font-semibold;
+        }
+      }
+      .burger {
+        @apply block;
+      }
+      .search {
+        @apply max-w-[600px];
+        .search-input {
+          @apply py-1.5 px-12;
+        }
+        &::before {
+          @apply w-[16px] h-[16px];
+        }
+      }
+      .list {
+        @apply hidden;
+      }
+    }
+  }
+}

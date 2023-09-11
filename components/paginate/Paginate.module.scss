@@ -1,0 +1,20 @@
+.wrapper {
+  @apply mt-[69px] mb-[69px] flex items-center justify-center;
+  .list {
+    @apply flex gap-x-6;
+  }
+  .item {
+    @apply text-black bg-white rounded-[5px] py-1 px-3 cursor-pointer;
+  }
+}
+
+@media (max-width: 425px) {
+  .wrapper {
+    .list {
+      @apply gap-x-2.5;
+    }
+    .item {
+      @apply w-5  h-5 py-0 px-0 flex items-center justify-center;
+    }
+  }
+}

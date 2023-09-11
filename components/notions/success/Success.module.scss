@@ -1,0 +1,62 @@
+.overlay {
+  position: fixed;
+  width: 100vw;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  height: 100vh;
+  @apply items-center justify-center;
+  z-index: 2;
+  padding: 0 32px;
+}
+.modal {
+  @apply w-[792px] mr-[14px];
+  background-color: rgb(255, 255, 255);
+  height: auto;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px 0, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+}
+
+.wrapper {
+  @apply py-10 flex flex-col items-center justify-center relative gap-y-5;
+  .title {
+    @apply text-black text-[32px] font-medium;
+  }
+  .ok {
+    @apply rounded-[10px] bg-main text-black py-2 text-xl px-[138px];
+
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+}
+.close {
+  @apply absolute text-black right-[25px] top-[20px] text-lg;
+}
+
+@media (max-width: 834px) {
+  .wrapper {
+    @apply gap-y-11 py-5;
+    .title {
+      @apply text-xl;
+    }
+    .ok {
+      @apply text-xs shadow-none px-[82px];
+    }
+    .close {
+      img {
+        @apply w-[16px] h-[16px];
+      }
+    }
+  }
+}
+@media (max-width: 505px) {
+  .wrapper {
+    @apply px-[43px] gap-y-5;
+    .title {
+      @apply text-center text-sm;
+    }
+    .ok {
+      @apply w-[100%];
+    }
+  }
+}

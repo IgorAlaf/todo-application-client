@@ -1,0 +1,27 @@
+.nav {
+  @apply mt-20 w-[100%] px-[];
+  .list {
+    @apply flex items-center gap-x-32 pb-5  border-b border-solid border-[#464646];
+  }
+  .item {
+    a {
+      @apply text-white py-5;
+    }
+    .active {
+      @apply text-main;
+    }
+  }
+}
+@media (max-width: 834px) {
+  .nav {
+    @apply mt-5;
+    .list {
+      @apply gap-x-4 pb-2.5;
+      .item {
+        a {
+          @apply text-xs;
+        }
+      }
+    }
+  }
+}

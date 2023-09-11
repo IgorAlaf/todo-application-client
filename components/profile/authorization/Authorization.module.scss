@@ -1,0 +1,97 @@
+.wrapper {
+  @apply mt-9 flex flex-col gap-y-7 w-[100%];
+  .container {
+    @apply bg-white px-[78px] py-[50px] rounded-[20px];
+  }
+  .title {
+    @apply text-3xl leading-none;
+  }
+  .form {
+    @apply mt-10 gap-y-5;
+    input {
+      @apply outline-none text-sm  py-[12px] pl-5;
+      flex: 0 1 100%;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+    }
+    .red {
+      @apply border-red-400;
+    }
+    div {
+      @apply flex gap-x-6 justify-between mt-5;
+      div {
+        @apply pl-5;
+        flex: 0 1 100%;
+      }
+    }
+    button {
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+      @apply text-black bg-main w-[100%] mt-5 rounded-[10px] py-2.5;
+    }
+  }
+}
+
+@media (max-width: 834px) {
+  .wrapper {
+    @apply mt-5;
+    .container {
+      @apply py-10;
+    }
+    .avatar {
+      img {
+        @apply w-[85px] h-[84px];
+      }
+    }
+    .title {
+      @apply text-base font-medium leading-none;
+    }
+    .titles {
+      @apply justify-start gap-x-6;
+      .name {
+        @apply text-xl;
+      }
+    }
+    .form {
+      @apply mt-5;
+      h3 {
+        @apply font-medium text-base;
+      }
+      input {
+        @apply text-xs leading-none py-1 mt-2 h-[27px];
+        color: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(0, 0, 0, 0.6);
+      }
+      .template {
+        @apply flex-col mt-0;
+        label {
+        }
+      }
+      label {
+        @apply mt-5;
+      }
+      h5 {
+        @apply text-sm leading-none;
+      }
+      div {
+        @apply flex-col mt-0;
+      }
+      .buttons {
+        @apply mt-[30px] gap-x-0;
+        div {
+          display: none;
+        }
+        button {
+          @apply shadow-none text-[13px] font-medium h-[27px] py-0 mt-0;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 502px) {
+  .wrapper {
+    .container {
+      @apply px-[43px];
+    }
+  }
+}

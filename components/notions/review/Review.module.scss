@@ -1,0 +1,204 @@
+.overlay {
+  position: fixed;
+  width: 100vw;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  height: 100vh;
+  @apply items-center justify-center;
+  z-index: 2;
+  padding: 0 32px;
+}
+
+.modal {
+  @apply w-[792px] mr-[14px];
+  background-color: rgb(255, 255, 255);
+  height: auto;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px 0, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+}
+.wrapper {
+  @apply bg-white pt-[50px] pb-[62px] px-[78px] rounded-[20px] relative;
+  .title {
+    @apply text-[32px] font-medium leading-none text-black;
+  }
+  .form {
+    @apply mt-14 flex flex-col gap-y-5;
+  }
+  .container {
+    @apply w-[100%] flex items-center justify-between gap-6;
+    label {
+      @apply flex-1 flex items-center justify-center relative;
+    }
+  }
+
+  textarea {
+    @apply w-[100%] resize-none min-h-[138px] py-[15px];
+  }
+  input {
+    @apply py-3 w-[100%];
+  }
+  textarea,
+  input {
+    @apply rounded-[10px] px-6 text-sm placeholder:text-black placeholder:text-opacity-50 outline-none;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+  }
+  .buttons {
+    @apply mt-7 flex justify-between gap-6;
+    .button {
+      @apply flex-1 rounded-[10px] text-xl  py-2 text-black;
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+      &:last-child {
+        @apply bg-main;
+      }
+      &:first-child {
+        @apply bg-[#B4B4B4];
+      }
+    }
+  }
+}
+.close {
+  @apply absolute text-black right-[25px] top-[20px] text-lg;
+}
+
+.datepicker-toggle {
+  display: inline-block;
+  position: absolute;
+  right: 5%;
+  top: 30%;
+  width: 20px;
+  height: 20px;
+}
+.datepicker-toggle-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/image/calendar.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.datepicker-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.datepicker-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.timepicker-toggle {
+  display: inline-block;
+  position: absolute;
+  right: 5%;
+  top: 30%;
+  width: 20px;
+  height: 20px;
+}
+.timepicker-toggle-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/image/time.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.timepicker-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.timepicker-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+@media (max-width: 834px) {
+  .wrapper {
+    @apply py-10;
+    .helper {
+      @apply max-w-[490px] mx-auto;
+    }
+    .title {
+      @apply text-base;
+    }
+    .close {
+      @apply absolute text-black right-[25px] top-[20px] text-lg;
+      img {
+        @apply w-[16px] h-[16px];
+      }
+    }
+    .form {
+      @apply mt-5 gap-y-2.5;
+    }
+    .container {
+      @apply gap-1.5;
+    }
+    textarea {
+      @apply min-h-[72px];
+    }
+    .buttons {
+      @apply gap-x-1.5;
+      .button {
+        @apply text-xs leading-none shadow-none font-medium;
+      }
+    }
+    input,
+    textarea {
+      @apply py-1.5 text-xs;
+      border: 1px solid rgba(0, 0, 0, 0.6);
+    }
+    .datepicker-toggle {
+      top: 25%;
+      width: 15px;
+      height: 15px;
+    }
+    .timepicker-toggle {
+      top: 25%;
+      width: 15px;
+      height: 15px;
+    }
+  }
+}
+
+@media (max-width: 596px) {
+  .wrapper {
+    @apply px-[43px];
+    .form {
+      input,
+      textarea {
+        @apply pl-1;
+      }
+    }
+  }
+}
+@media (max-width: 390px) {
+  .wrapper {
+    @apply px-[23px];
+  }
+}
