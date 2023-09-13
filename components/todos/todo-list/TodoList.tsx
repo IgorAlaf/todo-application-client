@@ -1,9 +1,9 @@
 'use client'
 import { ITodo } from '@/types'
 import { FC, useState, useEffect } from 'react'
-import TodoItem from '../todo-item/TodoItem'
+import TodoItem, { TodoItemList } from '../todo-item/TodoItem'
 import Paginate from '@/components/paginate/Paginate'
-import { sortingDate } from '@/utils/sorting'
+import { sortingDate, sortingTime } from '@/utils/sorting'
 import { todoService } from '@/services/todo-service/todo.service'
 import { useQuery } from 'react-query'
 import { useAppSelector } from '@/hooks/useAppSelector'
@@ -72,25 +72,51 @@ const TodoList: FC = () => {
   const { search } = useAppSelector((store) => store.userReducer)
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
   const lastTodo = currentPage * tasksInPage
+  const map = new Map<string, ITodo[]>()
   let query = useQuery('todos', todoService.getTodos).data?.data || []
-  console.log(search)
   useEffect(() => {
     query = query.filter((item, key) => item.title.includes(search))
   }, [search])
+  query.map((item) => {
+    if (map.has(item.date)) {
+      const items1: ITodo[] = map.get(item.date) || []
+      items1.push(item)
+      map.set(item.date, items1)
+    } else {
+      map.set(item.date, [item])
+    }
+  })
   const firstTodo = lastTodo - tasksInPage
+  useEffect(() => {
+    if (!Array.from(map.keys()).slice(firstTodo, lastTodo)[0]) {
+      setCurrentPage((prev) => {
+        if (prev === 1) {
+          return 1
+        }
+        return prev - 1
+      })
+    }
+  }, [map])
   return (
     <div className="mt-2.5">
       <ul>
-        {query &&
-          sortingDate(query.filter((item) => item.title.includes(search)))
+        {map &&
+          sortingDate(Array.from(map.keys()))
             .slice(firstTodo, lastTodo)
-            .map((item, key) => {
-              return <TodoItem key={key} {...item} />
+            .map((item) => {
+              return (
+                <TodoItemList
+                  items={sortingTime(map.get(item) || []).filter((item) =>
+                    item.title.includes(search)
+                  )}
+                />
+              )
             })}
       </ul>
       <Paginate
         paginate={paginate}
-        tasksLength={query.filter((item) => item.title.includes(search)).length}
+        tasksLength={map.size}
+        currentPage={currentPage}
         tasksInPage={tasksInPage}
       />
     </div>

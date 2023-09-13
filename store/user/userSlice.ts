@@ -34,7 +34,6 @@ const userSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false
-        state.user = null
         state.errors = action.error?.message || ''
       })
       .addCase(login.pending, (state) => {
@@ -46,11 +45,11 @@ const userSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false
-        state.user = null
         state.errors = action.error?.message || ''
       })
       .addCase(logout.pending, (state) => {
         state.isLoading = true
+        state.user = null
       })
       .addCase(logout.fulfilled, (state, { payload }) => {
         state.isLoading = false
@@ -58,6 +57,7 @@ const userSlice = createSlice({
       })
       .addCase(logout.rejected, (state, action) => {
         state.isLoading = false
+        state.user = null
         state.errors = action.error?.message || ''
       })
       .addCase(updateEmail.pending, (state) => {

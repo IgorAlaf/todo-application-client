@@ -6,6 +6,9 @@
   .item {
     @apply text-black bg-white rounded-[5px] py-1 px-3 cursor-pointer;
   }
+  .active {
+    @apply bg-[#EFB030];
+  }
 }
 
 @media (max-width: 425px) {

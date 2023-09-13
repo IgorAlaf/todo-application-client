@@ -32,18 +32,19 @@ export const authService = {
     return response
   },
   async logout() {
-    await $api.get(getAuthUrl('logout'))
+    const response = await $api.get(getAuthUrl('logout'))
     localStorage.removeItem('accessToken')
+    return response
   },
   async updateEmail({ email, password }: ILogin) {
-    const response = await $api.patch(getAuthUrl('/update-email'), {
+    const response = await $api.patch(getAuthUrl('update-email'), {
       email,
       password,
     })
     return response
   },
   async updatePassword({ password, newPassword }: IPass) {
-    const response = await $api.patch(getAuthUrl('/update-pass'), {
+    const response = await $api.patch(getAuthUrl('update-pass'), {
       password,
       newPassword,
     })

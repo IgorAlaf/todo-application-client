@@ -4,7 +4,7 @@ import styles from './Header.module.scss'
 import Link from 'next/link'
 import cn from 'classnames'
 import { AuthButton } from '..'
-import { usePathname, redirect } from 'next/navigation'
+import { usePathname, redirect, useRouter } from 'next/navigation'
 import path from 'path'
 import Image from 'next/image'
 import { useAppSelector } from '@/hooks/useAppSelector'
@@ -13,6 +13,7 @@ import { logout, refresh } from '@/store/user/user.actions'
 import { useQuery } from 'react-query'
 import { todoService } from '@/services/todo-service/todo.service'
 import userSlice from '@/store/user/userSlice'
+import { authService } from '@/services/auth-service/auth.service'
 interface IProps {
   isAuth: boolean
 }
@@ -22,7 +23,7 @@ const Header: FC<IProps> = ({ isAuth }) => {
   const { user } = useAppSelector((store) => store.userReducer)
   const [show, setShow] = useState<boolean>(false)
   const [title, setTitle] = useState<string>('')
-  if (!user) {
+  if (!user && isAuth) {
     return (
       <div
         role="status"
@@ -95,6 +96,7 @@ const Header: FC<IProps> = ({ isAuth }) => {
 
 const NavList = () => {
   const pathname = usePathname()
+  const router = useRouter()
   const dispatch = useAppDispatch()
   console.log(pathname)
   return (
@@ -119,11 +121,12 @@ const NavList = () => {
       </li>
       <li
         className={styles.item}
-        onClick={async () => await dispatch(logout())}
+        onClick={async () => {
+          await dispatch(logout())
+          router.replace('/auth/login')
+        }}
       >
-        <Link className={cn(styles.link, styles.logout)} href="/auth/register">
-          Выйти
-        </Link>
+        <span className={cn(styles.link, styles.logout)}>Выйти</span>
       </li>
     </>
   )

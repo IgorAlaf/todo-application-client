@@ -26,6 +26,22 @@ const month: any = {
   '12': 'декабря',
 }
 
+export const TodoItemList: FC<{ items: ITodo[] }> = (props) => {
+  return (
+    <li className={styles.item}>
+      <h3 className={styles.title}>
+        {props.items[0] && Number.parseInt(props.items[0].date.substring(8))}{' '}
+        {props.items[0] && month[props.items[0].date.substring(5, 7)]}
+      </h3>
+      <ul>
+        {props.items.map((item, key) => {
+          return <TodoItem key={key} {...item} />
+        })}
+      </ul>
+    </li>
+  )
+}
+
 const TodoItem: FC<ITodo> = ({
   id,
   time,
@@ -38,6 +54,9 @@ const TodoItem: FC<ITodo> = ({
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [success, setSuccess] = useState<boolean>(false)
   const [showReview, setShowReview] = useState<boolean>(false)
+  const [check, setCheck] = useState<boolean>(false)
+  const [checkSuccess, setCheckSuccess] = useState<boolean>(false)
+  const [content1, setContent1] = useState<Array<string>>([])
   const del = useMutation(todoService.deleteTodo, {
     onSuccess: () => {
       queryClient.invalidateQueries('todos')
@@ -56,51 +75,56 @@ const TodoItem: FC<ITodo> = ({
     document.getElementsByTagName('body')[0].style.paddingRight = '15px'
   }
   return (
-    <li className={styles.item}>
-      <h3 className={styles.title}>
-        {Number.parseInt(date.substring(8))} {month[date.substring(5, 7)]}
-      </h3>
-      <div className={styles.wrapper}>
-        <div className={styles.checked}>
-          <div
-            className={styles.container}
-            onClick={() => {
-              edit.mutate({
-                id,
-                time,
-                description,
-                title,
-                date,
-                checked: !checked,
-              })
-            }}
-          >
-            <input
-              className={styles.checkbox}
-              checked={checked}
-              type="checkbox"
-            />
-            <span className={styles.checkmark}></span>
-          </div>
-          <span className={styles.time}>{time}</span>
-        </div>
-        <h4
-          className={styles.content}
+    // <li className={styles.item}>
+
+    <div className={styles.wrapper}>
+      <div className={styles.checked}>
+        <div
+          className={styles.container}
           onClick={() => {
             open()
-            setShowReview(true)
+            if (checked) {
+              setContent1([
+                'Вы уверены что хотите переоткрыть задачу',
+                'Переоткрыть',
+                'Задача успешно переоткрыта',
+              ])
+            } else {
+              setContent1([
+                'Вы уверены что хотите завершить задачу',
+                'Завершить',
+                'Задача успешно завершена',
+              ])
+            }
+
+            setCheck(true)
           }}
         >
-          {title}
-        </h4>
-        <div className={styles.edit}>
-          <button onClick={() => setShowModal(true)}>
-            <Image alt="edit" width={30} height={30} src="image/edit.svg" />
-          </button>
-          <button onClick={() => setShowConfirm(true)}>
-            <Image alt="del" width={30} height={30} src="image/delete.svg" />
-          </button>
+          <input
+            className={styles.checkbox}
+            checked={checked}
+            type="checkbox"
+          />
+          <span className={styles.checkmark}></span>
         </div>
+        <span className={styles.time}>{time}</span>
+      </div>
+      <h4
+        className={styles.content}
+        onClick={() => {
+          open()
+          setShowReview(true)
+        }}
+      >
+        {title}
+      </h4>
+      <div className={styles.edit}>
+        <button onClick={() => setShowModal(true)}>
+          <Image alt="edit" width={30} height={30} src="image/edit.svg" />
+        </button>
+        <button onClick={() => setShowConfirm(true)}>
+          <Image alt="del" width={30} height={30} src="image/delete.svg" />
+        </button>
       </div>
       {showModal && (
         <EditTodo
@@ -128,7 +152,23 @@ const TodoItem: FC<ITodo> = ({
           todo={{ id, time, description, title, date, checked }}
         />
       )}
-    </li>
+      {check && (
+        <Confirm
+          setShowConfirm={setCheck}
+          setSuccess={setCheckSuccess}
+          content={content1[0]}
+          material={{ id, time, description, title, date, checked: !checked }}
+          func={edit}
+          title={title}
+          buttonContent={content1[1]}
+        />
+      )}
+      {checkSuccess && (
+        <Success content={content1[2]} setShowConfirm={setCheckSuccess} />
+      )}
+    </div>
+
+    // </li>
   )
 }
 

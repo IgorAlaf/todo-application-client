@@ -28,7 +28,12 @@ export const login = createAsyncThunk<IAuthResponse, ILogin>(
 )
 
 export const logout = createAsyncThunk('auth/logout', async () => {
-  await authService.logout()
+  try {
+    const response = await authService.logout()
+    return response.data
+  } catch (error) {
+    console.log('not log out')
+  }
 })
 
 export const updateEmail = createAsyncThunk<IUser, ILogin>(

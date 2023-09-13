@@ -1,7 +1,7 @@
 .login {
   @apply max-w-primary px-8 mx-auto  mt-[105px];
   .content {
-    @apply bg-white pl-[74px] pr-[82px] py-10 max-w-[384px] mx-auto rounded-[30px];
+    @apply bg-white pl-[74px] pr-[82px] py-10 max-w-[384px] mx-auto rounded-[30px] relative;
   }
   .graduation {
     h1 {
@@ -14,7 +14,7 @@
     }
   }
   .form {
-    @apply mt-10;
+    @apply mt-10 relative;
     input {
       @apply w-[100%] py-0.5 mb-5 outline-none pl-6;
       border: 1px solid rgba(0, 0, 0, 0.4);
@@ -59,7 +59,7 @@
       }
       .form {
         input {
-          @apply shadow-none text-xs h-[27px];
+          @apply shadow-none text-xs h-[27px] relative;
           border: 1px solid rgba(0, 0, 0, 0.6);
         }
         .form__buttons {

@@ -7,6 +7,8 @@ import Image from 'next/image'
 import { todoService } from '@/services/todo-service/todo.service'
 import { queryClient } from '@/providers/MainProvider'
 import { useMutation } from 'react-query'
+import Success from '@/components/notions/success/Success'
+import Confirm from '@/components/notions/confirm/Confirm'
 
 interface IProps {
   todo: ITodo
@@ -23,29 +25,24 @@ const EditTodo: FC<IProps> = ({ setShowModal, todo }) => {
       queryClient.invalidateQueries('todos')
     },
   })
+  const [success, setSuccess] = useState<boolean>(false)
+  const [confirm, setConfirm] = useState<boolean>(false)
   const [title, setTitle] = useState(todo.title)
   const [description, setDescription] = useState(todo.description)
   const [dateF, setDateF] = useState(todo.date)
   const [time, setTimeF] = useState(todo.time)
   return (
-    <div className={styles.overlay}>
+    <div className={styles.overlay} id="edit-module">
       <div className={styles.modal}>
         <div className={styles.wrapper}>
           <div className={styles.helper}>
             <h1 className={styles.title}>Редактировать задачу</h1>
             <form
               className={styles.form}
-              onSubmit={async () => {
-                setShowModal(false)
+              onSubmit={async (e) => {
+                e.preventDefault()
+                setConfirm(true)
                 close()
-                await edit.mutate({
-                  date: dateF,
-                  description: description,
-                  id: todo.id,
-                  time,
-                  checked: todo.checked,
-                  title: title,
-                })
               }}
             >
               <input
@@ -138,6 +135,30 @@ const EditTodo: FC<IProps> = ({ setShowModal, todo }) => {
           </div>
         </div>
       </div>
+      {confirm && (
+        <Confirm
+          buttonContent="Изменить"
+          content="Вы уверены что хотите изменить задачу"
+          title={title}
+          setSuccess={setSuccess}
+          setShowConfirm={setConfirm}
+          func={edit}
+          material={{
+            date: dateF,
+            description: description,
+            id: todo.id,
+            time,
+            checked: todo.checked,
+            title: title,
+          }}
+        />
+      )}
+      {success && (
+        <Success
+          content="Задача успешно изменена"
+          setShowConfirm={setSuccess}
+        />
+      )}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-'use state'
+'use client'
 import { FC, useState } from 'react'
 import styles from './Confirm.module.scss'
 import Success from '../success/Success'
@@ -45,9 +45,9 @@ const Confirm: FC<IProps> = ({
             </button>
             <button
               onClick={async () => {
-                await func.mutate(material)
-                setSuccess(true)
                 setShowConfirm(false)
+                setSuccess(true)
+                await func.mutate(material)
               }}
             >
               {buttonContent}

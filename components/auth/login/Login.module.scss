@@ -1,7 +1,7 @@
 .login {
   @apply max-w-primary px-8 mx-auto  mt-[105px];
   .content {
-    @apply bg-white pl-[74px] pr-[82px] py-10 max-w-[384px] mx-auto rounded-[30px];
+    @apply bg-white pl-[74px] pr-[82px] py-10 max-w-[384px] mx-auto rounded-[30px] relative;
   }
   .graduation {
     h1 {

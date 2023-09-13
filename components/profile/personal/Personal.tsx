@@ -11,7 +11,7 @@ import { useQuery, useMutation } from 'react-query'
 import { queryClient } from '@/providers/MainProvider'
 import { formatDate } from '@/utils/format'
 import classNames from 'classnames'
-
+import InputMask from 'react-input-mask'
 const Personal: FC = () => {
   const query =
     useQuery('get-profile', profileService.getProfile).data?.data ||
@@ -38,8 +38,9 @@ const Personal: FC = () => {
   useEffect(() => {
     ;(document.getElementById('date-id') as HTMLInputElement).value =
       query.dateOfBirth
-    ;(document.getElementById('tel-id') as HTMLInputElement).value =
-      query.phone?.substring(1)
+    ;(document.getElementById('tel-id') as HTMLInputElement).value = query.phone
+      ? query.phone?.substring(1)
+      : ''
   }, [query, getValues('phone'), getValues('dateOfBirth')])
 
   const mutate = useMutation(profileService.saveProfiel, {
@@ -62,7 +63,7 @@ const Personal: FC = () => {
           <img src="/image/base-icon.png" alt="avatar" />
         </div>
         <h2 className={styles.name}>
-          {query.name ? query.name + ' ' + query.surname : 'Неизвестно'}
+          {query.name ? query.name + ' ' + query.surname : ''}
         </h2>
       </div>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -79,7 +80,7 @@ const Personal: FC = () => {
               className={classNames('pr-3', { [styles.red]: errors.surname })}
               type="text"
               placeholder={
-                getValues('surname') ? getValues('surname') : 'Неизвестно'
+                getValues('surname') ? getValues('surname') : 'Фамилия'
               }
             />
           </label>
@@ -93,7 +94,7 @@ const Personal: FC = () => {
               })}
               className={classNames({ [styles.red]: errors.name })}
               type="text"
-              placeholder={getValues('name') ? getValues('name') : 'Неизвестно'}
+              placeholder={getValues('name') ? getValues('name') : 'Имя'}
             />
           </label>
         </div>
@@ -109,7 +110,7 @@ const Personal: FC = () => {
               className={classNames({ [styles.red]: errors.patronymic })}
               type="text"
               placeholder={
-                getValues('patronymic') ? getValues('patronymic') : 'Неизвестно'
+                getValues('patronymic') ? getValues('patronymic') : 'Отчество'
               }
             />
           </label>
@@ -127,6 +128,7 @@ const Personal: FC = () => {
               })}
               type="date"
               max={formatDate(new Date())}
+              min={'1923' + formatDate(new Date()).substring(4)}
               placeholder={
                 getValues('dateOfBirth')
                   ? getValues('dateOfBirth')
@@ -138,29 +140,41 @@ const Personal: FC = () => {
         <div className={styles.template}>
           <label>
             <h5>Пол</h5>
-            <input
-              type="text"
-              className={classNames({ [styles.red]: errors.sex })}
-              placeholder={getValues('sex') ? getValues('sex') : 'm/f'}
-              {...register('sex', {
-                required: 'Sex is required field',
-                maxLength: 1,
-                minLength: 1,
-                pattern: /[m | f]/,
-              })}
-              minLength={1}
-              maxLength={1}
-            />
+            <div className={styles['custom-select']}>
+              <input
+                type="text"
+                className={classNames({ [styles.red]: errors.sex })}
+                placeholder={getValues('sex') ? getValues('sex') : 'Пол'}
+                {...register('sex', {
+                  required: 'Sex is required field',
+                  maxLength: 1,
+                  minLength: 1,
+                  pattern: /[m | f]/,
+                })}
+                minLength={1}
+                maxLength={1}
+              />
+            </div>
           </label>
           <label>
             <h5>Номер телефона </h5>
-            <input
+            {/* <input
               type="tel"
               id="tel-id"
               className={classNames({ [styles.red]: errors.phone })}
-              placeholder={
-                getValues('phone') ? getValues('phone') : 'Неизвестно'
-              }
+              placeholder={getValues('phone') ? getValues('phone') : 'Телефон'}
+              {...register('phone', {
+                required: 'Phone is required field',
+                maxLength: 11,
+                minLength: 11,
+              })}
+            /> */}
+            <InputMask
+              mask="+7 (999) 999-99-99"
+              type="tel"
+              id="tel-id"
+              className={classNames({ [styles.red]: errors.phone })}
+              placeholder={getValues('phone') ? getValues('phone') : 'Телефон'}
               {...register('phone', {
                 required: 'Phone is required field',
                 maxLength: 11,
