@@ -21,7 +21,6 @@ export const authService = {
     email,
     password,
   }: ILogin): Promise<AxiosResponse<IAuthResponse>> {
-    console.log(process.env.NEXT_PUBLIC_API_URL)
     const response = await axiosClassic.post<IAuthResponse>(
       getAuthUrl('login'),
       { email, password }

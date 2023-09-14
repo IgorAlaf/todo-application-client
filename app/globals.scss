@@ -15,6 +15,24 @@ body {
     @apply max-w-primary mx-auto px-4;
   }
 }
-input[value='0000-00-00']::-webkit-datetime-edit {
+input[type='time']#time-input-create-how::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+  -webkit-appearance: none;
+}
+input[type='time']#time-input-edit::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+  -webkit-appearance: none;
+}
+input[value='0000-00-00']#date-input-create::-webkit-datetime-edit {
   color: transparent;
+}
+input[type='date']#date-input-create::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+}
+input[type='date']#date-input-edit::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
 }

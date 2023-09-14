@@ -8,6 +8,7 @@ import { queryClient } from '@/providers/MainProvider'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ITodoReq } from '@/types'
 import classNames from 'classnames'
+import Success from '@/components/notions/success/Success'
 const CreateTodo: FC = () => {
   const {
     register,
@@ -18,6 +19,7 @@ const CreateTodo: FC = () => {
   } = useForm<ITodoReq>({
     mode: 'onSubmit',
   })
+  const [success, setSuccess] = useState<boolean>(false)
   const [dateF, setDateF] = useState<string>('')
   const [timeF, setTimeF] = useState<string>('')
   const [error, setError] = useState<string>('')
@@ -39,9 +41,15 @@ const CreateTodo: FC = () => {
       setDateF('')
       setTimeF('')
       setError('')
+      open()
+      setSuccess(true)
     } else {
       setError('Empty field (datef or timeF or title)')
     }
+  }
+  function open() {
+    document.getElementsByTagName('body')[0].style.overflowY = 'hidden'
+    document.getElementsByTagName('body')[0].style.paddingRight = '15px'
   }
   return (
     <div className={styles.wrapper}>
@@ -74,10 +82,22 @@ const CreateTodo: FC = () => {
           <div className={styles.container}>
             <label>
               <input
-                type="text"
+                type="date"
+                id="date-input-create"
                 placeholder="Дата"
-                readOnly
+                // readOnly
                 value={dateF}
+                onChange={(e) => {
+                  setDateF(e.target.value)
+                }}
+                min={formatDate(new Date())}
+                max={formatDate(
+                  new Date(
+                    new Date().getFullYear(),
+                    new Date().getMonth(),
+                    new Date().getDate() + 7
+                  )
+                )}
                 className={classNames({
                   [styles.red]: dateF === '' && error,
                 })}
@@ -94,7 +114,7 @@ const CreateTodo: FC = () => {
                     new Date(
                       new Date().getFullYear(),
                       new Date().getMonth(),
-                      new Date().getDate() + 6
+                      new Date().getDate() + 7
                     )
                   )}
                 />
@@ -102,10 +122,15 @@ const CreateTodo: FC = () => {
             </label>
             <label>
               <input
-                type="text"
+                type="time"
+                id="time-input-create-how"
+                onChange={(e) => {
+                  setTimeF(e.target.value)
+                }}
+                min="06:00"
+                max="23:00"
                 placeholder="Время"
                 value={timeF}
-                readOnly
                 className={classNames({
                   [styles.red]: timeF === '' && error,
                 })}
@@ -135,6 +160,9 @@ const CreateTodo: FC = () => {
         </form>
         {error && (
           <span className="text-red-600 absolute text-sm mt-2">{error}</span>
+        )}
+        {success && (
+          <Success content="Задача добавлена" setShowConfirm={setSuccess} />
         )}
       </div>
     </div>

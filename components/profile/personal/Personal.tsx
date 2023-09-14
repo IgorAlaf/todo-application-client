@@ -1,5 +1,5 @@
 'use client'
-import { FC, useEffect, useRef } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import styles from './Personal.module.scss'
 import Image from 'next/image'
 import { useAppSelector } from '@/hooks/useAppSelector'
@@ -12,7 +12,11 @@ import { queryClient } from '@/providers/MainProvider'
 import { formatDate } from '@/utils/format'
 import classNames from 'classnames'
 import InputMask from 'react-input-mask'
+import $api from '@/api/interceptors'
+import { getProfileUrl } from '@/config/api.config'
 const Personal: FC = () => {
+  const [showSelect, setShowSelect] = useState<boolean>(false)
+  // const [selectValue, setSelectValue] = useState<string>('')
   const query =
     useQuery('get-profile', profileService.getProfile).data?.data ||
     ({} as IProfile)
@@ -20,6 +24,7 @@ const Personal: FC = () => {
     register,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm<IProfile>({
     defaultValues: {
@@ -34,20 +39,33 @@ const Personal: FC = () => {
     values: query,
     mode: 'onChange',
   })
-  const inputRef = useRef('')
+  const inputRef = useRef<any>()
   useEffect(() => {
-    ;(document.getElementById('date-id') as HTMLInputElement).value =
-      query.dateOfBirth
     ;(document.getElementById('tel-id') as HTMLInputElement).value = query.phone
-      ? query.phone?.substring(1)
-      : ''
-  }, [query, getValues('phone'), getValues('dateOfBirth')])
-
+  }, [query])
+  useEffect(() => {}, [query])
+  useEffect(() => {}, [getValues('phone')])
   const mutate = useMutation(profileService.saveProfiel, {
     onSuccess: () => {
       queryClient.invalidateQueries('get-profile')
     },
   })
+  const image = useQuery('get-image', async () => {
+    return $api.get(getProfileUrl('image'))
+  }).data?.data
+  useEffect(() => {
+    async function sss() {
+      const response = await $api.get(getProfileUrl('image'), {
+        headers: { 'Content-Type': 'image/jpg' },
+        responseType: 'blob',
+      })
+      setSelectFile(response.data)
+      console.log(response)
+    }
+    sss()
+  }, [])
+
+  const [selectFile, setSelectFile] = useState<File>()
   const onSubmit: SubmitHandler<IProfile> = async (data) => {
     data.dateOfBirth = data.dateOfBirth.substring(0, 10)
     console.log(data.dateOfBirth)
@@ -55,12 +73,44 @@ const Personal: FC = () => {
       ...data,
       dateOfBirth: data.dateOfBirth.substring(0, 10),
     })
+    if (selectFile) {
+      const formData = new FormData()
+      formData.set('image', selectFile)
+      const response = await $api.post('files/upload', formData, {
+        headers: {
+          'Content-Encoding': 'utf-8',
+        },
+        responseEncoding: 'utf-8',
+      })
+    }
   }
   return (
     <div className={styles.wrapper}>
       <div className={styles.titles}>
         <div className={styles.avatar}>
-          <img src="/image/base-icon.png" alt="avatar" />
+          <input
+            type="file"
+            ref={inputRef}
+            className="hidden opacity-0"
+            accept="image/*"
+            onChange={(e) => {
+              console.log(e.target.files)
+              if ((e.target.files || [])[0]) {
+                setSelectFile((e.target.files || [])[0])
+              }
+            }}
+          />
+          <img
+            onClick={() => {
+              inputRef.current.click()
+            }}
+            src={
+              selectFile
+                ? URL.createObjectURL(selectFile)
+                : '/image/base-icon.png'
+            }
+            alt="avatar"
+          />
         </div>
         <h2 className={styles.name}>
           {query.name ? query.name + ' ' + query.surname : ''}
@@ -141,19 +191,52 @@ const Personal: FC = () => {
           <label>
             <h5>Пол</h5>
             <div className={styles['custom-select']}>
-              <input
-                type="text"
-                className={classNames({ [styles.red]: errors.sex })}
-                placeholder={getValues('sex') ? getValues('sex') : 'Пол'}
-                {...register('sex', {
-                  required: 'Sex is required field',
-                  maxLength: 1,
-                  minLength: 1,
-                  pattern: /[m | f]/,
+              <button
+                className={classNames(styles['select-button'], {
+                  [styles['red']]: errors.sex,
                 })}
-                minLength={1}
-                maxLength={1}
-              />
+                onClick={() => {
+                  setShowSelect((prev) => !prev)
+                }}
+                {...register('sex', {
+                  required: 'sex is required field',
+                })}
+              >
+                <span className={styles['selected-value']}>
+                  {getValues('sex')
+                    ? getValues('sex') === 'm'
+                      ? 'Мужской'
+                      : 'Женский'
+                    : 'Пол'}
+                </span>
+                <span className={styles['arrow']}></span>
+              </button>
+              {showSelect && (
+                <ul role="listbox" className={styles['select-dropdown']}>
+                  <li
+                    role="option"
+                    onClick={() => {
+                      setShowSelect(false)
+                      // setSelectValue('m')
+                      setValue('sex', 'm')
+                    }}
+                  >
+                    <input type="radio" id="github" name="social-account" />
+                    <label htmlFor="github">Myжской</label>
+                  </li>
+                  <li
+                    role="option"
+                    onClick={() => {
+                      setShowSelect(false)
+                      // setSelectValue('f')
+                      setValue('sex', 'f')
+                    }}
+                  >
+                    <input type="radio" id="instagram" name="social-account" />
+                    <label htmlFor="instagram">Женский</label>
+                  </li>
+                </ul>
+              )}
             </div>
           </label>
           <label>
@@ -174,11 +257,12 @@ const Personal: FC = () => {
               type="tel"
               id="tel-id"
               className={classNames({ [styles.red]: errors.phone })}
-              placeholder={getValues('phone') ? getValues('phone') : 'Телефон'}
+              placeholder="Телефон"
               {...register('phone', {
                 required: 'Phone is required field',
-                maxLength: 11,
-                minLength: 11,
+                maxLength: 18,
+                minLength: 18,
+                pattern: /^\+\d{1} \(\d{3}\) \d{3}-\d{2}-\d{2}$/,
               })}
             />
           </label>

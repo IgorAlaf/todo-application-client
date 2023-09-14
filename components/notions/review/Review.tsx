@@ -37,7 +37,7 @@ const Review: FC<IProps> = ({ setShowModal, todo }) => {
                         new Date(
                           new Date().getFullYear(),
                           new Date().getMonth(),
-                          new Date().getDate() + 6
+                          new Date().getDate() + 7
                         )
                       )}
                       readOnly

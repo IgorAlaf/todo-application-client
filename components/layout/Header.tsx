@@ -98,7 +98,6 @@ const NavList = () => {
   const pathname = usePathname()
   const router = useRouter()
   const dispatch = useAppDispatch()
-  console.log(pathname)
   return (
     <>
       <li className={styles.item}>
@@ -112,7 +111,8 @@ const NavList = () => {
       <li className={styles.item}>
         <Link
           className={cn(styles.link, {
-            [styles.active]: pathname === '/profile',
+            [styles.active]:
+              pathname === '/profile' || '/profile/authorization',
           })}
           href="/profile"
         >

@@ -15,7 +15,6 @@ export const profileService = {
     sex,
     surname,
   }: IProfileReq): Promise<AxiosResponse<IProfile>> {
-    phone = '+7' + phone.substring(1)
     const response = $api.post(getProfileUrl('save'), {
       dateOfBirth,
       name,

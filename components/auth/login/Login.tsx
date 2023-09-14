@@ -31,7 +31,6 @@ const Login: FC = () => {
   useEffect(() => {
     if (user && !isLoading) {
       router.replace('/')
-      console.log(user)
     }
   }, [user])
   if (isLoading) {

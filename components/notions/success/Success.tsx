@@ -4,8 +4,10 @@ import Image from 'next/image'
 interface IProps {
   content: string
   setShowConfirm: Function
+
+  setShowModal?: Function
 }
-const Success: FC<IProps> = ({ content, setShowConfirm }) => {
+const Success: FC<IProps> = ({ content, setShowConfirm, setShowModal }) => {
   function close() {
     document.getElementsByTagName('body')[0].style.overflowY = 'auto'
     document.getElementsByTagName('body')[0].style.paddingRight = '0px'
@@ -20,6 +22,7 @@ const Success: FC<IProps> = ({ content, setShowConfirm }) => {
             onClick={() => {
               close()
               setShowConfirm(false)
+              setShowModal ? setShowModal(false) : ''
             }}
           >
             ОК

@@ -42,7 +42,6 @@ const EditTodo: FC<IProps> = ({ setShowModal, todo }) => {
               onSubmit={async (e) => {
                 e.preventDefault()
                 setConfirm(true)
-                close()
               }}
             >
               <input
@@ -63,9 +62,20 @@ const EditTodo: FC<IProps> = ({ setShowModal, todo }) => {
               <div className={styles.container}>
                 <label>
                   <input
-                    type="text"
+                    type="date"
+                    id="date-input-edit"
+                    onChange={(e) => {
+                      setDateF(e.target.value)
+                    }}
                     placeholder="Дата"
-                    readOnly
+                    min={formatDate(new Date())}
+                    max={formatDate(
+                      new Date(
+                        new Date().getFullYear(),
+                        new Date().getMonth(),
+                        new Date().getDate() + 7
+                      )
+                    )}
                     value={dateF}
                   />
                   <span className={styles['datepicker-toggle']}>
@@ -78,7 +88,7 @@ const EditTodo: FC<IProps> = ({ setShowModal, todo }) => {
                         new Date(
                           new Date().getFullYear(),
                           new Date().getMonth(),
-                          new Date().getDate() + 6
+                          new Date().getDate() + 7
                         )
                       )}
                       value={dateF}
@@ -88,9 +98,14 @@ const EditTodo: FC<IProps> = ({ setShowModal, todo }) => {
                 </label>
                 <label>
                   <input
-                    type="text"
+                    type="time"
+                    id="time-input-edit"
                     placeholder="Время"
-                    readOnly
+                    onChange={(e) => {
+                      setTimeF(e.target.value)
+                    }}
+                    min="06:00"
+                    max="23:00"
                     value={time}
                   />
                   <span className={styles['timepicker-toggle']}>
@@ -157,6 +172,7 @@ const EditTodo: FC<IProps> = ({ setShowModal, todo }) => {
         <Success
           content="Задача успешно изменена"
           setShowConfirm={setSuccess}
+          setShowModal={setShowModal}
         />
       )}
     </div>

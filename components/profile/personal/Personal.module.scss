@@ -2,6 +2,7 @@
   @apply mt-9 bg-white py-[50px] px-[78px] w-[100%] rounded-[20px];
   .avatar {
     img {
+      @apply w-[126px] h-[125px] rounded-full cursor-pointer;
       @apply object-cover;
     }
   }
@@ -69,6 +70,7 @@
         color: rgba(0, 0, 0, 0.5);
         border: 1px solid rgba(0, 0, 0, 0.6);
       }
+
       .template {
         @apply flex-col mt-0;
         label {
@@ -79,6 +81,23 @@
       }
       h5 {
         @apply text-sm leading-none;
+      }
+    }
+    .custom-select {
+      select {
+        @apply min-h-[27px] py-1;
+      }
+      .select-button {
+        @apply min-h-[27px] py-1;
+      }
+      .select-dropdown li label {
+        @apply py-1;
+      }
+      .select-dropdown li input {
+        @apply text-sm;
+      }
+      .select-dropdown li label {
+        @apply mt-0 overflow-y-hidden;
       }
     }
     .button {
@@ -126,4 +145,67 @@
       }
     }
   }
+}
+
+.custom-select {
+  @apply w-[100%] relative;
+  select {
+    appearance: none;
+    /* safari */
+    -webkit-appearance: none;
+    /* other styles for aesthetics */
+    width: 100%;
+    font-size: 1.15rem;
+    // padding: 0.675em 6em 0.675em 1em;
+  }
+}
+.select-button {
+  width: 100%;
+  font-size: 1.15rem;
+  cursor: pointer;
+  @apply block text-xs leading-none min-h-[45.6px] cursor-pointer outline-none px-5;
+  // color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected-value {
+  text-align: left;
+}
+.arrow {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #000;
+  transition: transform ease-in-out 0.3s;
+}
+.select-dropdown {
+  position: absolute;
+  list-style: none;
+  width: 100%;
+  max-height: 200px;
+  transition: 0.5s ease;
+}
+.select-dropdown li {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.select-dropdown li label {
+  width: 100%;
+  padding: 8px 10px;
+  cursor: pointer;
+  @apply bg-black text-white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+.select-dropdown input {
+  @apply cursor-pointer;
+}
+.select-dropdown input[type='radio'] {
+  position: absolute;
+  left: 0;
+  opacity: 0;
 }

@@ -29,7 +29,6 @@ const Register: FC = () => {
   useEffect(() => {
     if (user && !isLoading) {
       router.replace('/')
-      console.log(user)
     }
   }, [user])
   if (isLoading && !user) {

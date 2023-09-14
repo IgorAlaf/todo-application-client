@@ -125,7 +125,6 @@ const ChangePass = () => {
   const res = async (text: string) => {
     setErr1('Не правильный пароль')
   }
-  console.log(err1 + ' ' + notion)
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Смена пароля</h2>
@@ -159,7 +158,7 @@ const ChangePass = () => {
               }}
             />
           </label>
-          <div></div>
+          <label className="w-[100%] relative flex flex-auto"></label>
         </div>
         <div>
           <label className="w-[100%] relative flex flex-auto">
