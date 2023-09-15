@@ -60,9 +60,14 @@
   padding: 15px;
   background: #000;
   transition: transform 0.5s;
-  @apply flex items-center justify-center;
+  @apply flex justify-center mt-16;
 }
-.menu-list {
+.menu-burger {
+  .item-burger {
+    a {
+      @apply flex items-center text-white gap-x-3 text-2xl font-light gap-y-2.5;
+    }
+  }
 }
 
 @media (max-width: 834px) {

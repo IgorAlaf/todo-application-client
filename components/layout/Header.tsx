@@ -14,6 +14,7 @@ import { useQuery } from 'react-query'
 import { todoService } from '@/services/todo-service/todo.service'
 import userSlice from '@/store/user/userSlice'
 import { authService } from '@/services/auth-service/auth.service'
+import { INavItem } from '@/types'
 interface IProps {
   isAuth: boolean
 }
@@ -78,19 +79,59 @@ const Header: FC<IProps> = ({ isAuth }) => {
           <ul className={styles.list}>
             {isAuth ? <NavList /> : <AuthButton />}
           </ul>
-          <button className={styles.burger} onClick={() => setShow(true)}>
+          <button
+            className={styles.burger}
+            onClick={() => setShow((prev) => !prev)}
+          >
             <Image src="image/burger.svg" alt="menu" width={20} height={8} />
           </button>
         </nav>
         {show && (
           <nav className={styles.menu}>
-            <ul className={styles['menu-list']}>
-              {isAuth ? <NavList /> : <AuthButton />}
-            </ul>
+            {isAuth ? (
+              <BurgerList
+                items={[
+                  { title: 'Главная', icon: 'home.svg', path: '/' },
+                  { title: 'Профиль', icon: 'profile.svg', path: '/profile' },
+                ]}
+              />
+            ) : (
+              <BurgerList
+                items={[
+                  {
+                    title: 'Вход и регистрация',
+                    path: '/auth/login',
+                    icon: 'login.svg',
+                  },
+                ]}
+              />
+            )}
           </nav>
         )}
       </div>
     </header>
+  )
+}
+
+const BurgerList: FC<{ items: INavItem[] }> = ({ items }) => {
+  return (
+    <ul className={styles['menu-burger']}>
+      {items.map((item, key) => {
+        return (
+          <li className={styles['item-burger']}>
+            <Link href={item.path}>
+              <Image
+                alt="icon"
+                src={`/image/${item.icon}`}
+                width={30}
+                height={30}
+              />
+              <span>{item.title}</span>
+            </Link>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
 
@@ -112,7 +153,7 @@ const NavList = () => {
         <Link
           className={cn(styles.link, {
             [styles.active]:
-              pathname === '/profile' || '/profile/authorization',
+              pathname === '/profile' || pathname === '/profile/authorization',
           })}
           href="/profile"
         >
@@ -120,7 +161,7 @@ const NavList = () => {
         </Link>
       </li>
       <li
-        className={styles.item}
+        className={cn(styles.item, 'cursor-pointer')}
         onClick={async () => {
           await dispatch(logout())
           router.replace('/auth/login')

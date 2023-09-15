@@ -59,3 +59,9 @@ export interface IProfileReq {
 export interface IProfile extends IProfileReq {
   id: number
 }
+
+export interface INavItem {
+  icon: string
+  title: string
+  path: string
+}

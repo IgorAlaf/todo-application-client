@@ -32,7 +32,7 @@ const Personal: FC = () => {
       name: query.name,
       surname: query.surname,
       patronymic: query.patronymic,
-      phone: query.phone,
+      // phone: query.phone || '',
       sex: query.sex,
       dateOfBirth: query.dateOfBirth,
     },
@@ -41,7 +41,10 @@ const Personal: FC = () => {
   })
   const inputRef = useRef<any>()
   useEffect(() => {
-    ;(document.getElementById('tel-id') as HTMLInputElement).value = query.phone
+    if (query.phone) {
+      ;(document.getElementById('tel-id') as HTMLInputElement).value =
+        query.phone || ''
+    }
   }, [query])
   useEffect(() => {}, [query])
   useEffect(() => {}, [getValues('phone')])
@@ -66,6 +69,21 @@ const Personal: FC = () => {
   }, [])
 
   const [selectFile, setSelectFile] = useState<File>()
+  useEffect(() => {
+    async function helper() {
+      if (selectFile) {
+        const formData = new FormData()
+        formData.set('image', selectFile)
+        const response = await $api.post('files/upload', formData, {
+          headers: {
+            'Content-Encoding': 'utf-8',
+          },
+          responseEncoding: 'utf-8',
+        })
+      }
+    }
+    helper()
+  }, [selectFile])
   const onSubmit: SubmitHandler<IProfile> = async (data) => {
     data.dateOfBirth = data.dateOfBirth.substring(0, 10)
     console.log(data.dateOfBirth)
@@ -73,17 +91,18 @@ const Personal: FC = () => {
       ...data,
       dateOfBirth: data.dateOfBirth.substring(0, 10),
     })
-    if (selectFile) {
-      const formData = new FormData()
-      formData.set('image', selectFile)
-      const response = await $api.post('files/upload', formData, {
-        headers: {
-          'Content-Encoding': 'utf-8',
-        },
-        responseEncoding: 'utf-8',
-      })
-    }
+    // if (selectFile) {
+    //   const formData = new FormData()
+    //   formData.set('image', selectFile)
+    //   const response = await $api.post('files/upload', formData, {
+    //     headers: {
+    //       'Content-Encoding': 'utf-8',
+    //     },
+    //     responseEncoding: 'utf-8',
+    //   })
+    // }
   }
+  const sendAvatar = async () => {}
   return (
     <div className={styles.wrapper}>
       <div className={styles.titles}>
@@ -93,7 +112,7 @@ const Personal: FC = () => {
             ref={inputRef}
             className="hidden opacity-0"
             accept="image/*"
-            onChange={(e) => {
+            onChange={async (e) => {
               console.log(e.target.files)
               if ((e.target.files || [])[0]) {
                 setSelectFile((e.target.files || [])[0])
